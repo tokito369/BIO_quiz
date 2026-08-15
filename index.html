@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Complete Digestive System Revision Quiz</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #eef2f5;
+      margin: 0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    .quiz-container {
+      background: #ffffff;
+      max-width: 750px;
+      width: 100%;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    h1 {
+      color: #1a365d;
+      text-align: center;
+      margin-bottom: 8px;
+    }
+    p.subtitle {
+      text-align: center;
+      color: #718096;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+    .question-card {
+      margin-bottom: 24px;
+      padding: 18px;
+      border-radius: 8px;
+      background-color: #f8fafc;
+      border-left: 5px solid #3182ce;
+    }
+    .question-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: #2d3748;
+      margin-bottom: 14px;
+    }
+    .options-grid {
+      display: grid;
+      gap: 9px;
+    }
+    .option-btn {
+      padding: 12px 14px;
+      font-size: 0.95rem;
+      text-align: left;
+      border: 1.5px solid #cbd5e0;
+      background: #ffffff;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease-in-out;
+    }
+    .option-btn:hover:not(:disabled) {
+      background-color: #edf2f7;
+      border-color: #a0aec0;
+    }
+    /* Feedback styles */
+    .option-btn.correct {
+      background-color: #38a169 !important;
+      color: #ffffff !important;
+      border-color: #2f855a !important;
+      font-weight: bold;
+    }
+    .option-btn.wrong {
+      background-color: #e53e3e !important;
+      color: #ffffff !important;
+      border-color: #c53030 !important;
+      font-weight: bold;
+    }
+    .explanation {
+      margin-top: 12px;
+      padding: 10px;
+      background: #edf2f7;
+      border-radius: 6px;
+      font-size: 0.9rem;
+      color: #2d3748;
+      display: none;
+    }
+    #score-section {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2b6cb0;
+      margin-top: 25px;
+      padding: 15px;
+      background: #ebf8ff;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="quiz-container">
+  <h1>🩺 Digestive System Master Revision</h1>
+  <p class="subtitle">Click an answer to check your understanding. Correct answers turn green and wrong answers turn red.</p>
+  <div id="quiz"></div>
+  <div id="score-section" style="display:none;"></div>
+</div>
+
+<script>
+const quizQuestions = [
+  {
+    topic: "Introduction & General Anatomy",
+    question: "1. What is the total length of the continuous human alimentary canal from mouth to anus?",
+    options: ["About 5 meters", "More than 9 meters", "Around 3 meters", "Approximately 15 meters"],
+    correct: 1,
+    explanation: "The digestive tract is more than 9 meters long from the mouth to the anus."
+  },
+  {
+    topic: "Processes of Digestion",
+    question: "2. The process of chewing food into smaller pieces and moistening it with saliva is termed:",
+    options: ["Deglutition", "Defecation", "Mastication", "Emulsification"],
+    correct: 2,
+    explanation: "Ingestion involves placing food in the mouth, mastication (chewing), moistening with saliva, and deglutition (swallowing)."
+  },
+  {
+    topic: "Alimentary Canal Layers",
+    question: "3. What are the four structural tissue layers of the alimentary canal from outermost to innermost?",
+    options: [
+      "Mucosa → Submucosa → Muscle layer → Serosa / Adventitia",
+      "Serosa / Adventitia → Muscle layer → Submucosa → Mucosa",
+      "Peritoneum → Lamina propria → Muscularis → Lumen",
+      "Submucosa → Serosa → Muscularis mucosa → Epithelium"
+    ],
+    correct: 1,
+    explanation: "From outside to inside: 1. Adventitia/Serosa, 2. Muscle layer (circular & longitudinal), 3. Submucosa, and 4. Mucosa."
+  },
+  {
+    topic: "Peritoneum Structure",
+    question: "4. Which layer of the body's largest serous membrane directly covers the abdominal organs?",
+    options: ["Parietal layer", "Visceral layer", "Lamina propria", "Submucosal layer"],
+    correct: 1,
+    explanation: "The peritoneum has two layers: the parietal layer lines the abdominal wall, and the visceral layer covers the abdominal organs."
+  },
+  {
+    topic: "Motility & Sphincters",
+    question: "5. What is the wave-like contraction of smooth muscle that pushes food through the GIT called?",
+    options: ["Mastication", "Deglutition", "Peristalsis", "Segmentation"],
+    correct: 2,
+    explanation: "Peristalsis is the wave-like contraction and relaxation of smooth muscle layers that pushes contents forward, regulated by muscular sphincters."
+  },
+  {
+    topic: "Mucosa Architecture",
+    question: "6. Which component of the mucosal layer consists of loose connective tissue supporting blood vessels and protective lymphoid tissue?",
+    options: ["Mucus membrane", "Lamina propria", "Muscularis mucosa", "Serosa"],
+    correct: 1,
+    explanation: "The mucosa consists of three layers: the inner mucus membrane, the lamina propria (loose connective tissue with blood and lymphoid vessels), and the muscularis mucosa."
+  },
+  {
+    topic: "Oral Cavity & Boundaries",
+    question: "7. The mouth (oral cavity) is lined by which type of epithelium?",
+    options: ["Simple columnar epithelium", "Transitional epithelium", "Stratified squamous epithelium", "Pseudostratified ciliated epithelium"],
+    correct: 2,
+    explanation: "The oral cavity is lined by mucous membrane consisting of stratified squamous epithelium containing mucus-secreting glands."
+  },
+  {
+    topic: "Dentition",
+    question: "8. How many temporary (deciduous) teeth erupt in a child, and how many permanent teeth replace them?",
+    options: ["20 temporary; 32 permanent", "24 temporary; 32 permanent", "20 temporary; 28 permanent", "16 temporary; 32 permanent"],
+    correct: 0,
+    explanation: "There are 20 temporary teeth (erupting between 6–24 months) and 32 permanent teeth (which begin replacing temporary teeth around year 6)."
+  },
+  {
+    topic: "Salivary Glands",
+    question: "9. Which is the correct combination of the three main pairs of salivary glands?",
+    options: [
+      "Parotid, Pancreatic, and Sublingual glands",
+      "Parotid, Submandibular, and Sublingual glands",
+      "Submandibular, Lingual, and Pharyngeal glands",
+      "Buccal, Maxillary, and Mandibular glands"
+    ],
+    correct: 1,
+    explanation: "The three pairs of salivary glands are the Parotid (sides of face), Submandibular (under jaw angle), and Sublingual (floor of mouth)."
+  },
+  {
+    topic: "Saliva & Chemical Digestion",
+    question: "10. Salivary amylase (ptyalin) begins the breakdown of starch into disaccharides at which optimum pH?",
+    options: ["pH 1.5 - 2.0", "pH 6.8", "pH 8.5", "pH 4.0"],
+    correct: 1,
+    explanation: "Saliva contains ptyalin (amylase) which breaks complex starch down into maltose. Its optimum action occurs at pH 6.8 (salivary pH ranges from 5.8 to 7.4)."
+  },
+  {
+    topic: "Pharynx & Esophagus",
+    question: "11. The esophagus is approximately 25 cm long. What characterizes the epithelial lining along its length?",
+    options: [
+      "Entirely columnar epithelium",
+      "Stratified squamous in the proximal third, columnar in the distal third, and mixed in the middle",
+      "Entirely keratinized stratified squamous epithelium",
+      "Ciliated columnar throughout"
+    ],
+    correct: 1,
+    explanation: "The proximal third is lined by stratified squamous epithelium, the distal third by columnar epithelium, and the middle third by a mixture of both."
+  },
+  {
+    topic: "Stomach Anatomy",
+    question: "12. How does the muscularis externa layer of the stomach differ from the rest of the GIT?",
+    options: [
+      "It contains only longitudinal fibers",
+      "It has 3 layers of smooth muscle: longitudinal, circular, and inner oblique",
+      "It consists entirely of skeletal muscle",
+      "It lacks a circular muscle layer"
+    ],
+    correct: 1,
+    explanation: "Unlike the standard 2 layers in the rest of the GIT, the stomach has 3 smooth muscle layers (outer longitudinal, middle circular, inner oblique) allowing it to act as a churning mill."
+  },
+  {
+    topic: "Stomach Physiology",
+    question: "13. Which critical substance is produced by the gastric mucosa to enable vitamin B12 absorption in the terminal ileum?",
+    options: ["Pepsinogen", "Intrinsic factor", "Hydrochloric acid", "Steapsin"],
+    correct: 1,
+    explanation: "The stomach secretes intrinsic factor, essential for the absorption of vitamin B12 in the terminal ileum, alongside pepsin and HCl."
+  },
+  {
+    topic: "Small Intestine Subdivisions",
+    question: "14. What are the three parts of the small intestine in order, and what is their approximate length?",
+    options: [
+      "Duodenum (10 in) → Jejunum (3 ft) → Ileum (6 ft)",
+      "Jejunum (10 in) → Duodenum (6 ft) → Ileum (3 ft)",
+      "Ileum (10 in) → Duodenum (3 ft) → Cecum (6 ft)",
+      "Duodenum (3 ft) → Ileum (3 ft) → Jejunum (6 ft)"
+    ],
+    correct: 0,
+    explanation: "The small intestine consists of the Duodenum (~10 inches), Jejunum (~3 feet, primary nutrient absorption), and Ileum (~6 feet, empties into cecum)."
+  },
+  {
+    topic: "Large Intestine Structure",
+    question: "15. What are the three thickened longitudinal smooth muscle bands on the colon that produce its puckered (sacculated) appearance called?",
+    options: ["Pyloric rings", "Rugae", "Taenia coli", "Villi"],
+    correct: 2,
+    explanation: "Longitudinal muscle fibers in the colon collect into three distinct bands known as taenia coli, creating characteristic sacculations."
+  },
+  {
+    topic: "Pancreas Anatomy & Physiology",
+    question: "16. Why is the pancreas classified as both an exocrine and endocrine gland?",
+    options: [
+      "It filters blood (exocrine) and produces bile (endocrine)",
+      "Acini secrete digestive enzymes via ducts (exocrine); Islets of Langerhans secrete insulin & glucagon directly into blood (endocrine)",
+      "It only functions during digestion",
+      "It secretes saliva through ducts and hormones through nerves"
+    ],
+    correct: 1,
+    explanation: "The exocrine part (lobules/acini) drains enzymes via the pancreatic duct into the duodenum, while endocrine islets secrete insulin and glucagon directly into the bloodstream."
+  },
+  {
+    topic: "Liver Structure & Blood Supply",
+    question: "17. Blood entering the liver sinusoids in close contact with hepatocytes is a mixture from which two vessels?",
+    options: [
+      "Hepatic vein and Renal artery",
+      "Hepatic artery and Portal vein",
+      "Inferior vena cava and Celiac trunk",
+      "Left gastric artery and Splenic vein"
+    ],
+    correct: 1,
+    explanation: "Liver sinusoids contain a mixture of oxygenated blood from the hepatic artery and nutrient-rich venous blood from the portal vein."
+  },
+  {
+    topic: "Liver & Gallbladder Storage/Ducts",
+    question: "18. The common bile duct is formed by the union of which two ducts?",
+    options: [
+      "Pancreatic duct and Cystic duct",
+      "Common hepatic duct and Cystic duct",
+      "Right hepatic duct and Left hepatic duct",
+      "Hepatic duct and Duodenal duct"
+    ],
+    correct: 1,
+    explanation: "The right and left hepatic ducts form the common hepatic duct, which then joins the cystic duct from the gallbladder to form the common bile duct (~7.5 cm)."
+  },
+  {
+    topic: "Enzymes & Protein Digestion",
+    question: "19. Which enzyme secreted by the gastric mucosa initiates protein digestion into polypeptides?",
+    options: ["Trypsin", "Pepsin", "Steapsin", "Aminopeptidase"],
+    correct: 1,
+    explanation: "Pepsin (activated in the presence of gastric HCl) begins protein digestion by breaking proteins down into peptides/polypeptides."
+  },
+  {
+    topic: "Diagnostic Procedures - Capsule Endoscopy",
+    question: "20. Which diagnostic procedure uses a swallowable camera (PillCam) that transmits video images to a recorder on the patient's waist for 8 hours?",
+    options: ["Colonoscopy", "Capsule endoscopy", "Defecography", "Esophagogastroduodenoscopy (EGD)"],
+    correct: 1,
+    explanation: "Capsule endoscopy involves swallowing a PillCam to take images of the small intestine while passing naturally through the digestive tract over 8 hours."
+  },
+  {
+    topic: "Diagnostic Procedures - ERCP",
+    question: "21. What is the procedure combining an upper flexible endoscope and X-ray with injected dye to examine and treat bile ducts and the pancreas called?",
+    options: ["MRCP", "ERCP (Endoscopic Retrograde Cholangiopancreatography)", "Anorectal manometry", "Barium enema"],
+    correct: 1,
+    explanation: "ERCP combines endoscopy (passed into the duodenum) and X-ray imaging with radio-opaque dye to examine the bile and pancreatic ducts."
+  },
+  {
+    topic: "Diagnostic Procedures - Motility & Manometry",
+    question: "22. Which test uses a small pressure-sensing catheter to measure sphincter and muscular strength in the esophagus or anorectal region?",
+    options: ["Defecography", "Manometry (Esophageal / Anorectal)", "Stool culture", "CT scan"],
+    correct: 1,
+    explanation: "Manometry uses small catheter tubes with sensors to evaluate muscle contractions and pressures exerted by sphincters."
+  }
+];
+
+let score = 0;
+let answeredQuestions = 0;
+
+function buildQuiz() {
+  const quizDiv = document.getElementById("quiz");
+  
+  quizQuestions.forEach((q, idx) => {
+    const card = document.createElement("div");
+    card.className = "question-card";
+
+    const title = document.createElement("div");
+    title.className = "question-title";
+    title.innerText = q.question;
+    card.appendChild(title);
+
+    const optionsGrid = document.createElement("div");
+    optionsGrid.className = "options-grid";
+
+    const expl = document.createElement("div");
+    expl.className = "explanation";
+    expl.id = `expl-${idx}`;
+    expl.innerHTML = `<strong>📖 Key Revision Note:</strong> ${q.explanation}`;
+
+    q.options.forEach((optText, optIdx) => {
+      const btn = document.createElement("button");
+      btn.className = "option-btn";
+      btn.innerText = optText;
+
+      btn.onclick = () => {
+        const allButtons = optionsGrid.querySelectorAll(".option-btn");
+        allButtons.forEach(b => b.disabled = true);
+
+        if (optIdx === q.correct) {
+          btn.classList.add("correct");
+          score++;
+        } else {
+          btn.classList.add("wrong");
+          allButtons[q.correct].classList.add("correct");
+        }
+
+        expl.style.display = "block";
+        answeredQuestions++;
+
+        if (answeredQuestions === quizQuestions.length) {
+          const scoreBox = document.getElementById("score-section");
+          scoreBox.style.display = "block";
+          scoreBox.innerText = `🎯 Full Revision Complete! You scored ${score} out of ${quizQuestions.length}`;
+        }
+      };
+
+      optionsGrid.appendChild(btn);
+    });
+
+    card.appendChild(optionsGrid);
+    card.appendChild(expl);
+    quizDiv.appendChild(card);
+  });
+}
+
+buildQuiz();
+</script>
+
+</body>
+</html>
