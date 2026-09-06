@@ -25,4 +25,4 @@ I built this project to manage my study timeline and make catching up on lecture
 
 ## 🎞️ Preview
 
-*(Drag and drop your video file here)*
+*(comming soon...)*
