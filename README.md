@@ -22,6 +22,8 @@ I built this project to manage my study timeline and make catching up on lecture
 1. Clone this repository to your local machine.
 2. Open the `index.html` file in your preferred web browser.
 3. Start the quiz!
+4. if u r lazy then take this - https://tokito369.github.io/BIO_quiz/
+   
 
 ## 🎞️ Preview
 
